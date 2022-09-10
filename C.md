@@ -18,7 +18,7 @@ the use of comments.
 ```c
 // Comment text should always be preceded by a space.
 /* Multiline comments should be used when single line comments would span over
- * three lines of text. Asterisks should exist for each line and lie on the
+ * three lines of text (4+). Asterisks should exist for each line and lie on the
  * same column. The slash of the closing gesture should nestle cleanly within
  * the space left before each line of comments.
  */
@@ -26,7 +26,7 @@ the use of comments.
 
 When commenting out code, solely `//` is preferred, with or without the space,
 whichever is most comfortable for you. Personally, I prefer to just do
-`:+,+NUMLINESs/^/\/\/` (cool sed command that comments out the next NUMLINES
+`:+,+NUMLINESs/^/\/\/` (cool vim command that comments out the next NUMLINES
 lines (not including current line)!)
 
 ## Identifiers
@@ -39,10 +39,8 @@ enum EvenEnums { ENUM_FIELDS_ARE_LIKE_THIS, }; // though shouldn't be this long
 
 // Should match the name of the struct.
 typedef struct AllDataStructuresAreLikeThis AllDataStructuresAreLikeThis;
-// Same naming style as structs unless used like a integral or floating type.
-typedef uint64_t UUID;
-// If used as a number (ie. in arithmetic calculations):
-typedef char char
+// Same naming style as structs, but name should be descriptive for its use.
+typedef uint64_t UserID;
 
 #define MACROS_ARE_ALSO_LIKE_THIS
 #define EVEN_IF_THEY_ARE_FUNCTION_MACROS(x)
@@ -58,6 +56,9 @@ int main(int const argc, char const *const *const argv)
 	// Indent once, then begin code here.
 }
 
+// Notice two things: the single *empty* line separating the end of main and the
+// next function, and that these are, for semantic reasons, two separate comment
+// blocks.
 /* If the declaration is too long, consider splitting it into smaller functions
  * or make the function name shorter *without* sacrificing obviousness and
  * readability. If that isn't possible, split the arguments across multiple
@@ -71,10 +72,30 @@ int much_longer_function_maybe_a_bit_too_long_and_should_be_refactored(
 }
 ```
 
+## Pointers
+
+Pointers should be right-aligned, including in casts. No const should be on the
+left side of the data type.
+
+```c
+// In this example, i=integer, p=pointer, c=const, so "cpi" is "constant pointer
+// to an integer"
+int const ci;
+int *pi;
+int const *cpi;
+int const *const cpci;
+int const *const *pcpci;
+// And so on...
+
+int const ci = 4;
+int const *pci = &x;
+uint32_t const *pcu32 = (uint32_t const *) pci;
+```
+
 ## Headers
 
 Headers should be included categorically in the following order, with a single
-newline separating each category, and alphabetically ordered within each
+**empty** line separating each category, and alphabetically ordered within each
 category:
 
 1. Corresponding source file header (for example `main.c` requires `main.h`)
@@ -93,6 +114,7 @@ An example of how this might look:
 #include <math.h>
 #include <pthread.h>
 
+// Notice how there is a single *empty* line separating the above and below.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -103,7 +125,19 @@ name from top to bottom, it is most likely that you are searching for the
 definition of the function itself, and not its forward declaration or other uses
 of it.
 
-The structure of a header file should look as follows:
+The order of functions declared in a header file should match the order they are
+used in their corresponding C file, though this is not strictly necessary.
+
+Header files should be structured consistently like this:
+
+0. Header guard (preferably #pragma once)
+1. Includes (following above rules)
+2. Data structures (Structs, Unions, Enums, etc.)
+3. Function declarations
+
+The header guard and includes should be separated by a single empty newline.
+Every other section should be separated by two **empty** lines. An example of
+this is below:
 
 ```c
 // Please use pragma once guards.
@@ -116,6 +150,7 @@ The structure of a header file should look as follows:
 #include <stdbool.h>
 #include <stdint.h>
 
+
 // Data structures (Structs, Unions, Enums, etc.)
 struct MyCoolStruct {
 	bool myBool;
@@ -123,6 +158,11 @@ struct MyCoolStruct {
 	struct CoolData coolData;
 };
 
+
 // Function declarations.
-void change_id(struct MyCoolStruct *coolStruct, uint32_t newId);
+void change_id(struct MyCoolStruct *const coolStruct, uint32_t const newId);
+void change_bool(struct MyCoolStruct *const coolStruct, bool const myBool);
+
+// Different "groups" of functions should be separated by a single *empty* line.
+char *get_string_from_cool_data(struct MyCoolStruct const *const coolStruct);
 ```
