@@ -45,6 +45,73 @@ typedef uint64_t UserID;
 
 #define MACROS_ARE_ALSO_LIKE_THIS
 #define EVEN_IF_THEY_ARE_FUNCTION_MACROS(x)
+// ...Goto labels should also be formatted like macros.
+```
+
+## Branching
+
+Don't use goto's unless it makes your code much more readable by doing so. Use
+functions if you're too many scopes deep. Otherwise, branch style should be like
+this:
+
+```c
+// Notice the space after each branch instruction. The space should only exist
+// for branches and NOT functions. Also, the { is on the same line as the branch
+// as per Linux kernel standard.
+if (x == 2) {
+	// Code...
+}
+
+for (int i = 0; i < 10; i++) {
+	// Code...
+}
+
+while (x != 4) {
+	// Code
+}
+
+do {
+	// Code...
+} while (x != 4);
+
+/* Case statements should align to the depth of the switch. The reason for this
+ * is to emphasize that they are, truly, all at the same scope, and to prevent
+ * from switch statements becoming too indented (a regular if/else if/else would
+ * only need to be indented a minimum of one time, while a switch with
+ * separately indented cases would require a minimum of two indents. Also, for
+ * scopes within cases, they should be aligned to one indent past the switch,
+ * with the starting brace one space from the case *: statement.
+ */
+switch (x) {
+case 0:
+	break;
+case 1:
+	return 4;
+case 2: {
+		int x = 2;
+		x += 4;
+	}
+	break;
+default:
+	break;
+}
+
+/* If gotos and labels must be used, labels should be indented to the same level
+ * of indent as the function declaration itself. Since this is C and nested
+ * functions don't exist, that should in all cases be an indent of zero columns.
+ * The reason for the lack of indent is to emphasize the frightening nature of
+ * throwing away any respect for the scope within the function.
+ */
+int my_function(int x)
+{
+	if (x == 4) {
+		goto QUICK_RETURN;
+	} else if (x == 8) {
+		return 2;
+	}
+QUICK_RETURN:
+	return 28;
+}
 ```
 
 ## Function Declarations & Definitions
