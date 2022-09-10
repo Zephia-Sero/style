@@ -168,8 +168,7 @@ category:
 
 1. Corresponding source file header (for example `main.c` requires `main.h`)
 2. Project-specific headers (`main.c` requires `my_cool_header.h`)
-3. Library headers (for example `math.h` or `pthread.h`)
-4. `<std*.h>` headers. (for example `stdlib.h`)
+3. Other headers (library, standard, etc.)
 
 An example of how this might look:
 
@@ -179,10 +178,9 @@ An example of how this might look:
 #include "my_cool_header.h"
 #include "my_other_cool_header.h"
 
+// Notice how there is a single empty line separating the above and below.
 #include <math.h>
 #include <pthread.h>
-
-// Notice how there is a single empty line separating the above and below.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
