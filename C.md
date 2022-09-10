@@ -12,6 +12,7 @@ directives should be avoided unless they significantly increase readability or
 compatibility. If they reduce readability, attempt to regain readability via
 the use of comments.
 * Comment sooner rather than later. Comment too much rather than too little.
+* Don't overcomplicate things.
 
 ## Comments
 
@@ -56,7 +57,7 @@ int main(int const argc, char const *const *const argv)
 	// Indent once, then begin code here.
 }
 
-// Notice two things: the single *empty* line separating the end of main and the
+// Notice two things: the single empty line separating the end of main and the
 // next function, and that these are, for semantic reasons, two separate comment
 // blocks.
 /* If the declaration is too long, consider splitting it into smaller functions
@@ -82,7 +83,7 @@ left side of the data type.
 // to an integer"
 int const ci;
 int *pi;
-int const *cpi;
+int const *pci;
 int const *const cpci;
 int const *const *pcpci;
 // And so on...
@@ -95,7 +96,7 @@ uint32_t const *pcu32 = (uint32_t const *) pci;
 ## Headers
 
 Headers should be included categorically in the following order, with a single
-**empty** line separating each category, and alphabetically ordered within each
+empty line separating each category, and alphabetically ordered within each
 category:
 
 1. Corresponding source file header (for example `main.c` requires `main.h`)
@@ -114,7 +115,7 @@ An example of how this might look:
 #include <math.h>
 #include <pthread.h>
 
-// Notice how there is a single *empty* line separating the above and below.
+// Notice how there is a single empty line separating the above and below.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -136,8 +137,7 @@ Header files should be structured consistently like this:
 3. Function declarations
 
 The header guard and includes should be separated by a single empty newline.
-Every other section should be separated by two **empty** lines. An example of
-this is below:
+Every other section should be separated by two empty lines.
 
 ```c
 // Please use pragma once guards.
@@ -163,6 +163,6 @@ struct MyCoolStruct {
 void change_id(struct MyCoolStruct *const coolStruct, uint32_t const newId);
 void change_bool(struct MyCoolStruct *const coolStruct, bool const myBool);
 
-// Different "groups" of functions should be separated by a single *empty* line.
+// Different "groups" of functions should be separated by a single empty line.
 char *get_string_from_cool_data(struct MyCoolStruct const *const coolStruct);
 ```
